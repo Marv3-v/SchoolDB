@@ -3,13 +3,13 @@
 
 <?php
     require_once('../database/connexion.php'); 
-    $result = $mysqli->query("SELECT s.id, s.name, t.fullname as profesor, (SELECT knowState(sy.end_date)) as stat
+    $result = $connection->query("SELECT s.id, s.name, t.fullname as profesor, (SELECT knowState(sy.end_date)) as stat
                                 FROM teacher t, subject s, subject_year sy, year y
                                 WHERE sy.teacher_id = t.id
                                 AND sy.subject_id = s.id
                                 AND sy.year_id = y.id
                                 AND y.year = year(now())
-                                GROUP BY s.name") or die(mysqli_error($mysqli));
+                                GROUP BY s.name") or die(mysqli_error($connection));
 ?>
 
 <div class="container">
@@ -28,7 +28,7 @@
         </thead>
         <?php  
             $i = 0;
-            while($row = $result->fetch_assoc()):  ?>
+            forEach($result as $row):  ?>
         <tr>
             <td><?php echo $i = $i + 1; ?></td>
             <td><?php echo $row['name']; ?></td>
@@ -45,7 +45,7 @@
             <a href="courseDetail.php?detail=<?php echo $row['id']; ?>" class="button is-warning">Detail</a>
         </td>
         </tr>
-        <?php endwhile; ?>
+    <?php endforeach; ?>
     </table>
 </div>
 

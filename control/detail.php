@@ -3,22 +3,24 @@
 
 <?php require_once('../database/connexion.php'); ?>
 <?php 
-
-
 $id = $_GET['edit'];
 
-    $student = $mysqli->query("SELECT s.codigo, s.fullname as nombre, ROUND(datediff(now(), s.birthdate)/365) as edad
-                        FROM student s  
-                        WHERE s.id = $id") or die($mysqli->error);
-
-    $result = $mysqli->query("SELECT sub.name as curso, ssy.score as nota, knowState(sy.end_date) as eva, y.year as ciclo
-                            FROM student s, subject sub, student_subject_year ssy, year y, subject_year sy
-                            WHERE ssy.student_id = s.id
-                            AND  ssy.subject_year_Id = sy.id
-                            AND sy.subject_id = sub.id
-                            AND sy.year_Id = y.id 
-                            AND s.id = $id") or die($mysqli->error);
+    $sql = "SELECT s.codigo, s.fullname as nombre, ROUND(datediff(now(), s.birthdate)/365) as edad "
+            ."FROM student s "  
+            ."WHERE s.id = $id";
     
+   $sqld = "SELECT sub.name as curso, ssy.score as nota, knowState(sy.end_date) as eva, y.year as ciclo "
+          ."FROM student s, subject sub, student_subject_year ssy, year y, subject_year sy "
+          ."WHERE ssy.student_id = s.id "
+          ."AND  ssy.subject_year_Id = sy.id "
+          ."AND sy.subject_id = sub.id "
+          ."AND sy.year_Id = y.id " 
+          ."AND s.id = $id ";
+            
+    if($connection) {
+        $result = $connection->query($sqld);
+        $student = $connection->query($sql);
+    }
 ?>
 <?php if($result==null): ?>
     <div class="container">
@@ -27,7 +29,7 @@ $id = $_GET['edit'];
 <?php else: ?>
 <div class="container">
   
-    <?php $s = $student->fetch_assoc(); ?>
+    <?php $s = $student->fetch(); ?>
     <div class="columns">
         <div class="column">
           <?php echo $s['nombre'];?> <br>
@@ -53,7 +55,7 @@ $id = $_GET['edit'];
         </thead>
         <?php  
             $i = 0;
-            while($row = $result->fetch_assoc()):  ?>
+            forEach($result as $row):  ?>
         <tr>
             <td><?php echo $i = $i + 1; ?></td>
             <td><?php echo $row['curso']; ?></td>
@@ -77,7 +79,7 @@ $id = $_GET['edit'];
                 <?php endif; ?>
             </td>
         </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </table>
 </div>
 <?php endif; ?>

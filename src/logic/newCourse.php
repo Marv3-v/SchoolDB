@@ -5,8 +5,11 @@
 if(isset($_POST['save'])) {
     $name = $_POST['name'];
 
-    $mysqli->query("INSERT INTO subject VALUES (null, null, '$name' , 1)") or
-    die($mysqli->error);
+    $sql = "INSERT INTO subject VALUES (null, null, '$name' , 1)";
+    
+    if($connection) {
+        $connection->exec($sql);
+    }
 
     header('location: ../../cursos/courseList.php');
 }

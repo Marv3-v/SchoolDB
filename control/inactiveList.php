@@ -11,18 +11,17 @@
 <?php endif; ?>
 <?php
     require_once('../database/connexion.php'); 
-    $sql = "SELECT * FROM student WHERE is_active = 1";
+    $sql = "SELECT * FROM student WHERE is_active = 0";
     $result = $connection->query($sql);
 ?>
 
 <div class="container">
     <div class="columns">
     <div class="column">
-        <h1 class="title">Students</h1>
+        <h1 class="title">Inactive Students</h1>
     </div>
     <div class="column is-one-quarter">
-        <a href="inactiveList.php" class="button is-warning">Inactive Students</a>
-        <a href="new.php" class="button is-primary">New</a>
+        <a href="list.php" class="button is-warning">Students</a>
     </div>
     </div>
     <div class="row justify-content-center">
@@ -58,7 +57,7 @@
                     <a href="detail.php?edit=<?php echo $row['id']; ?>" class="button is-warning">Detail</a>
                 </td>
                 <td>
-                    <button name="delete" onClick="location.href='../src/logic/deleteOne.php?delete=<?php echo $row['id']?>'" class="button is-danger">Delete</button>
+                    <button name="delete" onClick="" class="button is-primary">Active</button>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -7,29 +7,29 @@
 
 $id = $_GET['detail'];
 
-    $course = $mysqli->query("SELECT s.name, t.fullname as profesor, sy.start_date, sy.end_date
+    $course = $connection->query("SELECT s.name, t.fullname as profesor, sy.start_date, sy.end_date
                                 FROM teacher t, subject s, subject_year sy, year y
                                 WHERE sy.teacher_id = t.id
                                 AND sy.subject_id = s.id
                                 AND sy.year_id = y.id
                                 AND y.year = year(now())
                                 AND s.id = $id
-                                GROUP BY t.id;") or die($mysqli->error);
+                                GROUP BY t.id;") or die($connection->error);
 
 
-     $students = $mysqli->query("SELECT s.fullname, s.codigo
+     $students = $connection->query("SELECT s.fullname, s.codigo
                                     FROM student s, subject sub, subject_year sy, student_subject_year ssy
                                     WHERE sy.subject_id = sub.id
                                     AND ssy.student_id = s.id
                                     AND ssy.subject_year_id = sy.id
-                                    AND sub.id = 1;") or die($mysqli->error);
+                                    AND sub.id = 1;") or die($connection->error);
 
    
     
 ?>
 
 <div class="container">
- <?php $c = $course->fetch_assoc(); ?>
+ <?php $c = $course->fetch(); ?>
     <div class="columns">
         <div class="column">
           <?php echo $c['name'];?> <br>
@@ -52,7 +52,7 @@ $id = $_GET['detail'];
             </tr>
         </thead>
         <?php  $i = 0; ?>
-        <?php while($row = $students->fetch_assoc()):  ?>
+        <?php foreach($students as $row):  ?>
 
         <tr>    
             
@@ -62,7 +62,7 @@ $id = $_GET['detail'];
             <td><?php echo $row['codigo']; ?></td>
             <td><?php echo $row['fullname']; ?></td>
         </tr>
-        <?php endwhile; ?>
+        <?php endForEach; ?>
     </table>
 </div>
 

@@ -25,6 +25,11 @@ var current = window.location.href;
     }
  
 </script>
+<script>
+    window.onclick = function() {
+        var n = document.querySelector(".notification").remove();    
+    }
+</script>
 </body>
 
 </html>
