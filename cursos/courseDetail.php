@@ -17,12 +17,12 @@ $id = $_GET['detail'];
                                 GROUP BY t.id;") or die($connection->error);
 
 
-     $students = $connection->query("SELECT s.fullname, s.codigo
-                                    FROM student s, subject sub, subject_year sy, student_subject_year ssy
+     $students = $connection->query("SELECT s.codigo,  s.fullname
+                                    FROM student s, subject sub, year y, subject_year sy, student_subject_year ssy
                                     WHERE sy.subject_id = sub.id
                                     AND ssy.student_id = s.id
                                     AND ssy.subject_year_id = sy.id
-                                    AND sub.id = 1;") or die($connection->error);
+                                    AND sub.id = $id;") or die($connection->error);
 
    
     
